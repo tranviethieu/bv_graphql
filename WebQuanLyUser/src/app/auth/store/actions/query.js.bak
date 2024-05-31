@@ -1,0 +1,43 @@
+import gql from 'graphql-tag';
+//load hồ sơ của tôi
+export const ME = gql`
+{
+  response:me{
+    code
+    message
+    data{
+      _id
+      department
+      sipPhone
+      sipPhones
+      sipPassword
+      isWebRtc
+      role
+      base{
+        avatar
+        address
+        birthday
+        code
+        departmentId
+        sub
+        fullName
+        email
+        gender
+        isRoot
+        mariaged
+        title
+        work
+      }
+    }
+  }
+}
+`
+
+export const MUTATION_REGISTER_DEVICE = gql`
+mutation($data:DeviceInput!){
+  response:registerDevice(data:$data){
+    code
+    message
+  }
+}
+`

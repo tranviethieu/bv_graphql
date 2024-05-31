@@ -1,0 +1,109 @@
+import gql from 'graphql-tag';
+
+//query list chỉ định
+export const QUERY_INDICATIONS = gql`
+query($filtered:[FilteredInput],$sorted:[SortedInput],$page:Int,$pageSize:Int){
+  response:indications(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+    code
+    message
+    pages
+    page
+    records
+    data{
+      _id
+      name
+      result
+      note
+      createdTime
+      code
+      service_detail{
+        priceOfInsurance
+        priceOfSelfService
+        price
+      }
+      service{
+        code
+        name
+      }
+      createdTime
+      creator{
+        code
+        fullName
+      }
+      clinic{
+        code
+        name
+      }
+      doctor{
+        code
+        fullName
+      }
+      department{
+        code
+        name
+      }
+      state
+      sessionCode
+      files{
+        _id
+        name
+      }
+      detail_results{
+        sampleId
+        sampleCode
+        result
+        createdTime
+        updatedTime
+      }
+      patientInfo{
+        patientCode
+        work{
+          name
+        }
+        fullName
+        birthDay
+        address
+        phoneNumber
+        gender
+        ward{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+        street
+        district{
+          code
+          name
+        }
+      }
+    }
+  }
+}
+`
+export const UPDATE_INDICATION_CONFIRM = gql`
+  mutation($_id: String!){
+    response: confirm_indication(_id: $_id){
+      code
+      message
+    }
+  }
+`
+export const UPDATE_INDICATION_RESULT = gql`
+  mutation($_id: String!, $result:String!, $fileIds:[String]){
+    response: update_indication_result(_id: $_id, result: $result, fileIds: $fileIds){
+      code
+      message
+    }
+  }
+`

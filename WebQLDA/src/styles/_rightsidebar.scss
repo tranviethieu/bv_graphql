@@ -1,0 +1,13 @@
+
+.right-sidebar{
+    width:320px;
+    background: #fafafa !important;
+    z-index: 5;
+    top: 72px;
+    position: fixed;
+    right:-320px;
+    height: 100%;
+}
+.right-sidebar--open{    
+    right:0;
+}

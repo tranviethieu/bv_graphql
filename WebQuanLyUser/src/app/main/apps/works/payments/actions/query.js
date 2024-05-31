@@ -1,0 +1,560 @@
+import gql from 'graphql-tag';
+
+export const GET_MEDICAL_SESSION_DETAIL = gql`
+query($_id:String!){
+  response:medical_session(_id:$_id){
+    code
+    message
+    data{
+      _id
+      appointmentId
+      appointment{
+        _id
+        appointmentDate
+        appointmentTime
+        patientCode
+        patient{
+          fullName
+          birthDay
+          address
+          phoneNumber
+          gender
+          ward{
+            code
+            name
+          }
+          province{
+            code
+            name
+          }
+          nation{
+            code
+            name
+          }
+          nationality{
+            code
+            name
+          }
+          street
+          district{
+            code
+            name
+          }
+        }
+        channel
+        departmentId
+        department{
+          _id
+          code
+          name
+        }
+        note
+        state
+        followByDoctor
+      }
+      code
+      process
+      patientCode
+      reason
+      indications{
+        _id
+        service{
+          code
+          name
+        }
+        paid
+        transaction{
+          code
+        }
+        createdTime
+        creator{
+          code
+          fullName
+        }
+        clinic{
+          code
+          name
+        }
+        doctor{
+          code
+          fullName
+        }
+        department{
+          code
+          name
+        }
+        state
+      }
+    }
+  }
+}
+`
+
+export const GET_INDICATIONS_BY_SESSION = gql`
+query($sessionCode:String!){
+  response:indications(filtered:[{id:"sessionCode",value:$sessionCode}]){
+    code
+    message
+    data{
+      _id
+      service{
+        code
+        name
+      }
+      paid
+      transaction{
+        code
+      }
+      createdTime
+      creator{
+        code
+        fullName
+      }
+      clinic{
+        code
+        name
+      }
+      doctor{
+        code
+        fullName
+      }
+      department{
+        code
+        name
+      }
+      state
+    }
+  }
+}
+`
+
+export const GET_INDICATION = gql`
+query($_id:String!){
+  response:indication(_id:$_id){
+    code
+    message
+    data{
+      _id
+      clinic{
+        code
+        name
+      }
+      sessionCode
+      department{
+        code
+        name
+      }
+      doctor{
+        code
+        fullName
+      }
+      patientCode
+      service{
+        code
+        name
+      }
+    }
+  }
+}
+`
+
+export const UPDATE_INDICATION_TRANSACTION = gql`
+mutation($data:IndicationInput,$amount:Float,$patientType:PatientCategoryEnum){
+  response:save_indication_cashier(indication:$data,amount:$amount,patientType:$patientType)
+  {
+    code
+    message
+
+  }
+}
+`
+
+export const GET_ACCOUNT_BY_DEPARTMENT = gql`
+query($code:String!){
+  response:accounts(filtered:[{id:"base.departmentCode",value:$code}]){
+    code
+    message
+    data{
+      _id
+      base{
+        code
+        work
+        fullName
+        departmentId
+        departmentName
+      }
+    }
+  }
+}
+`
+
+export const GET_SERVICES = gql`
+{
+  response:medicalServiceCategorys{
+    code
+    message
+    data{
+      _id
+      code
+      name
+      services{
+        _id
+        code
+        name
+        price
+        priceOfInsurance
+        priceOfSelfService
+      }
+    }
+  }
+}
+`
+export const UPDATE_PATIENT = gql`
+mutation($data:UserInput!){
+  response:update_patient(data:$data){
+    code
+    message
+    data{
+      patientCode
+    }
+  }
+}
+`
+
+export const SEARCH_HIS_PATIENTS = gql`
+query($data:PatientInfoInput){
+  response:search_his_patients(data:$data){
+    code
+    message
+    records
+    data{
+      _id
+      fullName
+      birthDay
+      nation{
+        code
+        name
+      }
+      nationality{
+        code
+        name
+      }
+      district{
+        code
+        name
+      }
+      province{
+        code
+        name
+      }
+      ward{
+        code
+        name
+      }
+      gender
+      street
+      address
+      insuranceCode
+      patientCode
+      work
+    }
+  }
+}
+`
+export const SEARCH_MEDICAL_SESSIONS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+  response:medical_sessions(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+    code
+    message
+  	pages
+    records
+    data{
+      _id
+      code
+      createdTime
+      reason
+      creator{
+        _id
+        code
+        fullName
+      }
+      terminated
+      process
+      patientCode
+      patient{
+        fullName
+        gender
+        birthDay
+
+      }
+    }
+  }
+}
+`
+
+export const CREATE_MEDICAL_SESSION = gql`
+mutation($data:MedicalSessionInput, $indications: [IndicationInput]){
+  response:create_medical_session(data:$data, indications: $indications){
+    code
+    message
+    data
+    {
+      code
+    }
+  }
+}
+`
+
+export const GET_PATIENT = gql`
+query($patientCode:String!){
+  response:patient(patientCode:$patientCode){
+      code
+      message
+      data{
+        _id
+        fullName
+        birthDay
+        birthYear
+        phoneNumber
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+        district{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        ward{
+          code
+          name
+        }
+        gender
+        street
+        address
+        insuranceCode
+        patientCode
+        work
+      }
+    }
+}
+`
+
+
+export const GET_APPOINTMENT_DETAIL = gql`
+query($_id:String!){
+    response:appointment(_id:$_id){
+      code
+      message
+      data{
+        _id
+        appointmentDate
+        appointmentTime
+        patientCode
+        last_session{
+          code
+          _id
+        }
+        patient{
+          fullName
+          birthDay
+          address
+          phoneNumber
+          gender
+          ward{
+            code
+            name
+          }
+          province{
+            code
+            name
+          }
+          nation{
+            code
+            name
+          }
+          nationality{
+            code
+            name
+          }
+          street
+          district{
+            code
+            name
+          }
+        }
+        channel
+        departmentId
+        department{
+          _id
+          code
+          name
+        }
+        note
+        state
+        followByDoctor
+
+      }
+    }
+  }
+`
+
+
+
+//chi goi cac appointment kham vao ngay hom nay va da duoc duyet, luc nay inputPatient chinh la patient trong his
+export const GET_APPOINTMENTS = gql`
+query($filtered:[FilteredInput],$sorted:[SortedInput],$page:Int,$pageSize:Int){
+  response:appointments(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+    code
+    message
+    records
+    pages
+    data{
+      _id
+      appointmentDate
+      appointmentTime
+      patientCode
+      inputPatient{
+        fullName
+        phoneNumber
+        birthDay
+        birthYear
+        address
+        gender
+      }
+      patient{
+        _id
+      }
+      channel
+      departmentId
+      department{
+        name
+        code
+      }
+      note
+      state
+      followByDoctor
+
+    }
+  }
+}
+`
+
+export const GET_DEPARTMENTS = gql`
+query{
+  response: departments {
+    code
+    message
+    data {
+     _id
+     name
+     code
+     clinics{
+       code
+       name
+     }
+    }
+  }
+}
+`
+//tạo 1 chỉ định với trạng thái chưa thanh toán
+export const CREATE_INDICATION = gql`
+  mutation($data: IndicationInput ){
+    response: create_indication(data: $data){
+      code
+      message
+    }
+  }
+`
+//thanh toán cho 1 chỉ định
+export const CREATE_MEDICAL_TRANSACTION = gql`
+  mutation($indicationCode: String!, $patientCategory: PatientCategoryEnum!, $note: String ){
+    response: create_medical_transaction(indicationCode: $indicationCode, patientCategory: $patientCategory, note: $note){
+      code
+      message
+    }
+  }
+`
+//query list chỉ định
+export const QUERY_INDICATIONS = gql`
+query($filtered:[FilteredInput],$sorted:[SortedInput],$page:Int,$pageSize:Int){
+  response:indications(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+    code
+    message
+    pages
+    page
+    records
+    data{
+      _id
+      note
+      service{
+        code
+        name
+      }
+      paid
+      transaction{
+        code
+      }
+      createdTime
+      creator{
+        code
+        fullName
+      }
+      clinic{
+        code
+        name
+      }
+      doctor{
+        code
+        fullName
+      }
+      department{
+        code
+        name
+      }
+      state
+      patientCode
+      sessionCode
+      patient{
+        work{
+          name
+        }
+        fullName
+        birthDay
+        address
+        phoneNumber
+        gender
+        ward{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+        street
+        district{
+          code
+          name
+        }
+      }
+    }
+  }
+}
+
+`

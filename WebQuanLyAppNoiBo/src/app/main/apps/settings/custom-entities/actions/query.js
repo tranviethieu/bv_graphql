@@ -1,0 +1,124 @@
+import gql from 'graphql-tag';
+
+export const QUERY_EDITABLE_CLASSES = gql`
+{
+    response:editable_classes{
+        code
+        message
+        data
+    }
+}
+`
+export const QUERY_CUSTOM_ENTITIES_GRAPH = gql`
+query($className:String!){
+    response:custom_entities_graph(className:$className){
+      code
+      message
+      data{
+        _id
+        name
+        fullName
+        rootClassName
+        level
+        index
+        type
+        unique
+        require
+        label
+        children{
+            _id
+            name
+            fullName
+            rootClassName
+            level
+            index
+            type
+            unique
+            parentId
+            require
+            label
+            children{
+                _id
+                name
+                fullName
+                rootClassName
+                level
+                index
+                type
+                unique
+                require
+                parentId
+                label
+                children{
+                    _id
+                    name
+                    fullName
+                    rootClassName
+                    level
+                    index
+                    type
+                    unique
+                    require   
+                    label  
+                    parentId
+                    children{
+                        _id
+                        name
+                        fullName
+                        rootClassName
+                        level
+                        index
+                        type
+                        unique
+                        require   
+                        label        
+                        parentId  
+                    }        
+                }
+            }
+        }
+      }
+    }
+  }
+`
+
+export const QUERY_CUSTOM_ENTITIES = gql`
+query($className:String!,$isObject:Boolean){
+    response:custom_entities(className:$className,isObject:$isObject){
+      code
+      message
+      data{
+        _id
+        index
+        label
+        name
+        level
+        fullName
+        parent{
+          name
+          label
+        }
+        type
+        unique
+        require
+        updatedTime
+      }
+    }
+  }
+`
+export const SAVE_CUSTOM_ENTITY = gql`
+mutation($data:CustomEntityInput!){
+    response:save_custom_entity(data:$data){
+      code
+      message
+    }
+  }
+`
+export const REMOVE_CUSTOM_ENTITY = gql`
+mutation($_id:String!){
+    response:remove_custom_entity(_id:$_id){
+      code
+      message
+    }
+  }
+`

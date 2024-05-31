@@ -1,0 +1,6 @@
+.el-ImageGallery img{
+    object-fit: none;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+}

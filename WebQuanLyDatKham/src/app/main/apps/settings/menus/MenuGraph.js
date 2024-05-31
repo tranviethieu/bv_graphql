@@ -1,0 +1,589 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import { Button, Icon, Typography, Menu, MenuItem, Tooltip, IconButton, Checkbox, FormControlLabel, NativeSelect } from '@material-ui/core';
+import { FuseAnimate, FuseAnimateGroup, FusePageCarded } from '@fuse';
+import { showMessage } from 'app/store/actions'
+import * as Actions from './actions';
+import { DownloadExcelMultiSheet } from '../../shared-components/DownloadExcel';
+
+import _ from '@lodash';
+import OrgChart from 'react-orgchart';
+import 'react-orgchart/index.css';
+import { useDispatch } from 'react-redux';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import axios from 'axios';
+import { showQuickEditDialog, showQuickTableDialog, showImportExcelDialog } from '../../shared-dialogs/actions';
+import moment from 'moment';
+import { MoreVert } from '@material-ui/icons';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import { menuAttributes, exportCostColumns, quickTableColumns, DeveloperAttributes, showDeveloperTable, exportMenuColumns, importMenuColumns } from './components';
+
+const showEditDialog = (data, submit, attributes) => {
+    return (dispatch) => dispatch(showQuickEditDialog(
+        {
+            rootClass: "md:w-full lg:w-2/3",
+            className: 'pb-100',
+            title: data ? "Cập nhật" : "Thêm mới",
+            subtitle: "Menu",
+            attributes: attributes || menuAttributes,
+            data: data,
+            submit: submit
+
+        }));
+}
+
+function MenuGraph() {
+    const dispatch = useDispatch();
+    let [nodes, setNodes] = useState([]);
+    const [collapseLevel, setCollapseLevel] = useState(1);
+    const [attributes, setAttributes] = useState(menuAttributes);
+    const [menuList, setMenuList] = useState([])
+    const [icons, setIcons] = useState([]);
+    const [permissions, setPermissions] = useState([]);
+    const [developers, setDevelopers] = useState([]);
+    const [showDeathline, setShowDeathline] = useState(false);
+    const [showDev, setShowDev] = useState(false);
+    const [modifyNode, setModifyNode] = useState(true);
+    const [projects, setProjects] = useState([]);
+
+    function refetchMenu() {
+        //ta có thể thay hàm này bằng cách san phẳng graph để giảm lưu trữ + đồng nhất được trạng thái của các node
+        Actions.getGraph().then(response => {
+            if (response.code === 0) {
+                //sẽ set thành 1 cây mới chứ ko tham chiếu tới trạng thái của cây cũ
+                var newList = flatten(response.data);
+                //compare to oldList to map state children
+                updateNewList(newList);
+                setNodes(response.data);
+
+            }
+        });
+    }
+
+    function updateNewList(newList) {
+        newList.forEach(function (item) {
+            const check = menuList.find(m => m._id == item._id);
+            if (check) {
+                //update state here
+                if (check.collapse) {
+                    item.collapse = true;
+                    item._children = [...item.children];
+                    item.children = [];
+                } else {
+                    item.collapse = false;
+                }
+            }
+        });
+        setMenuList(newList);
+    }
+
+    ///san phẳng 1 graph mới thành list
+    function flatten(nodes) {
+        if (!nodes)
+            return [];
+        let newList = nodes;
+        nodes.forEach(function (item) {
+            if (item._children && item._children.length > 0) {
+                newList = [...newList, ...flatten(item._children)];
+            } else
+                if (item.children && item.children.length > 0) {
+                    newList = [...newList, ...flatten(item.children)];
+                }
+        })
+        return newList;
+    }
+
+    function handleChangeCollapse(value) {
+        setCollapseLevel(value);
+        setModifyNode(true);
+    }
+    useEffect(() => {
+        if (nodes && nodes.length > 0 && collapseLevel && modifyNode) {
+
+            nodes.forEach(function (node) {
+                doToggleAll(node, 10, true);
+            })
+            handleToggleAll(collapseLevel, false);
+            setModifyNode(false);
+        }
+    }, [collapseLevel, modifyNode, nodes]);
+    function fetchDeveloper() {
+        Actions.get_developers().then(response => {
+            setDevelopers(response.data);
+        })
+    }
+    function saveDeveloper(data) {
+        Actions.save_developer(data, dispatch).then(response => {
+            if (response.code == 0) {
+                fetchDeveloper();
+            }
+        })
+    }
+    useEffect(() => {
+        refetchMenu();
+        axios.get('/api/icons').then(res => {
+            setIcons(res.data);
+        });
+
+        Actions.getPermissions(dispatch).then(response => {
+            setPermissions(response.data.map(api => ({ value: api.permission, label: api.title })));
+
+        });
+        fetchDeveloper();
+        Actions.get_projects(dispatch).then(response => {
+            setProjects(response.data);
+        })
+    }, []);
+    function DownloadChildnode(node) {
+        const data = flatten((node._children && node._children.length > 0 && node._children) || (node.children && node.children.length > 0 && node.children));
+        const dataSheets = [
+            {
+                data, columns: exportMenuColumns
+            },
+
+        ];
+        return dataSheets;
+    }
+    ///chỉ nên hiện khi có yêu cầu nếu không sẽ rất tốn bộ nhớ
+    function DownloadCostNodes(data) {
+        // const data = menuList.filter(m => m.costNode);
+        const totalHour = _.sumBy(data, function (n) {
+            return n.effortHour;
+        })
+        // const totalHour = data.sumBy(d => parseInt(d.effortHour));
+        const totalDay = totalHour / 8;
+        const totalMonth = totalDay / 24;
+        const totalEffortHour = _.sumBy(data, function (n) {
+            return n.effortHour * (n.developers ? _.sumBy(n.developers, function (o) { return o.rank }) : 1);
+        });
+        data.push({ fullName: "Tổng giờ dev", effortHour: totalHour, totalEffortHour });
+        data.push({ fullName: "Tổng ngày", effortHour: totalDay, totalEffortHour: totalEffortHour / 8 });
+        data.push({ fullName: "Tổng tháng", effortHour: totalMonth, totalEffortHour: totalEffortHour / 192 });
+
+        const dataSheets = [
+            {
+                xSteps: 1,
+                columns: [{ title: "PHÂN TÍCH CHỨC NĂNG HỆ THỐNG HRM" }]
+            },
+            {
+                ySteps: 1,
+                data, columns: exportCostColumns
+            },
+
+        ];
+        return dataSheets;
+    }
+    useEffect(() => {
+        if (icons && icons.length > 0) {
+            const attIcon = menuAttributes.find(m => m.name == "icon");
+            attIcon.options = icons.map(i => ({ label: i.name, value: i.name }))
+        }
+        if (permissions && permissions.length > 0) {
+            const attPermissions = menuAttributes.find(m => m.name == "permissions");
+            const attSubPermissions = menuAttributes.find(m => m.name == "subPermissions");
+            attSubPermissions.options = attPermissions.options = permissions
+        }
+        if (menuList && menuList.length > 0) {
+            const parentAtt = menuAttributes.find(m => m.name == "parentId");
+            parentAtt.options = menuList.map(m => ({
+                value: m._id, label: m.fullName
+            }))
+        }
+        if (projects.length > 0) {
+            const projectAtt = menuAttributes.find(p => p.name == "projectId");
+            projectAtt.options = projects.map(p => ({
+                value: p._id, label: p.name
+            }));
+        }
+        const devAtt = menuAttributes.find(m => m.name == "devIds");
+        devAtt.options = developers.map(d => ({
+            value: d._id, label: d.name
+        }))
+        setAttributes([...menuAttributes]);
+    }, [permissions, menuList, icons, developers,projects]);
+
+    function handleToggleAll(level, collapse) {
+        if (nodes) {
+            nodes.forEach(function (node) {
+                doToggleAll(node, level, collapse);
+            })
+            // setNodes([...nodes]);
+            setModifyNode(true);
+            setNodes(nodes);
+        }
+    }
+    function doToggleAll(node, level, collapse) {
+        if (node.level < level) {
+            if (node.collapse && !collapse) {
+                node.collapse = false;
+                node.children = node._children;
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(function (child) {
+                        doToggleAll(child, level, collapse);
+                    })
+                }
+            } else if (!node.collapse && collapse) {
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(function (child) {
+                        doToggleAll(child, level, collapse);
+                    })
+                }
+                node.collapse = true;
+                node._children = [...node.children];
+                node.children = [];
+            }
+
+        }
+    }
+
+    ///cập nhật thông tin node được chỉnh sửa trong cấu trúc graph hiện tại
+    function updateNodeFromTree(nodes, itemChanged) {
+        nodes.forEach(function (item) {
+            if (item._id == itemChanged._id) {
+                var keys = Object.keys(itemChanged);
+                keys.forEach(function (key) {
+                    item[key] = itemChanged[key];
+                })
+                //finish update
+                return true;
+            } else if (item.children && item.children.length > 0)
+                updateNodeFromTree(item.children, itemChanged);
+        })
+    }
+
+    const MyNodeComponent = ({ node }) => {
+        const dispatch = useDispatch();
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const [confirm, setConfirm] = useState(false);
+
+        const handleClick = event => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+        function removeNodeFromTree(node, _id) {
+
+            if (node.children) {
+                var removed = _.remove(node.children, function (item) {
+                    return item._id === _id
+                })
+                if (removed.length == 0) {
+                    //tiep tuc check cac cap duoi
+                    node.children.forEach(function (item) {
+                        removeNodeFromTree(item, _id);
+                    })
+                }
+            }
+        }
+
+
+        function handleDelete(_id) {
+            Actions.remove(_id).then(response => {
+                if (response.code === 0) {
+                    nodes.forEach(function (node) {
+                        removeNodeFromTree(node, _id);
+                    })
+                    setNodes([...nodes]);
+                    dispatch(showMessage({ message: "Xóa thành công" }));
+                    //xóa trong data
+
+                }
+                handleClose();
+            })
+            setConfirm(false);
+        }
+        function toggleChildren(node) {
+            if (node.collapse) {
+                node.collapse = false;
+                node.children = [...node._children];
+                node._children = [];
+            } else {
+                node.collapse = true;
+                node._children = [...node.children];
+                node.children = [];
+            }
+            setNodes([...nodes]);
+        }
+        return (
+            <div className="el-graph-node">
+              <Tooltip title={node.description}>
+                <div>
+                  <Button startIcon={<Icon>{node.icon}</Icon>} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>{node.priority}.{node.name}</Button>
+                  {(node.type === "ITEM" || node.type === "HIDDEN" || node.type === "LINK" || node.type === "TAB") && <Typography className="text-12">({node.permissions.length} permissions)</Typography>}
+                    {node.costNode ?
+                      <div>
+                        {
+                          showDev && <div className="flex justify-center">({node.developers && node.developers.map((dev, index) => <Typography key={index} className="text-10">{dev.name}{index < node.developers.length - 1 && ","}</Typography>)})</div>
+                          }
+                          <Typography>{node.effortHour} hours</Typography>
+                          {
+                            showDeathline && ((moment(node.deathline) < new Date() && node.process < 100) ? <Typography className="text-11 text-red">{moment(node.deathline).format("DD-MM-YYYY")}</Typography> : <Typography className="text-11 text-blue">{moment(node.deathline).format("DD-MM-YYYY")}</Typography>)
+                          }
+                            </div> :
+                          <Typography className="text-12">{_.sumBy(node.costnodes, function (n) {
+                            return n.effortHour;
+                          })} hours / {node.costnodes.length} module</Typography>
+                        }
+                        {
+                          (node.children.length > 0 || (node._children && node._children.length > 0)) && <Typography>
+                            <Button onClick={() => toggleChildren(node)} endIcon={node.collapse ? <ExpandMore /> : <ExpandLess />} >({(node.collapse && node._children && node._children.length) || node.children.length})</Button></Typography>
+                        }
+                      </div>
+                      </Tooltip>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                      >
+                        <MenuItem onClick={() => dispatch(showEditDialog(convertDataToForm(node), handleSave, attributes))}>Sửa</MenuItem>
+                        <MenuItem onClick={() => dispatch(showEditDialog({ parentId: node._id, priority: 1, type: 'ITEM' }, handleSave, attributes))}>Thêm nhánh con</MenuItem>
+                        <MenuItem onClick={() => dispatch(showEditDialog({ parentId: node.parentId, priority: node.priority+1, type: 'ITEM' }, handleSave, attributes))}>Thêm nhánh cùng cấp</MenuItem>
+                        {
+                          node.children.length === 0 && <MenuItem onClick={() => handleDelete(node._id)}>Xóa</MenuItem>
+                        }
+                        <MenuItem onClick={() => dispatch(showEditDialog(convertDataToForm(_.omit(node, ["_id", "parentId"])), handleSave, attributes))}>Clone</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          {
+                            anchorEl && <DownloadExcelMultiSheet name="menu function" dataSheets={DownloadCostNodes(_.sortBy(node.costnodes, function (o) { return o.fullName }))}
+                              element={<Typography>Báo cáo EffortTime</Typography>}
+                                        />
+                          }
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          {
+                            anchorEl && <DownloadExcelMultiSheet name="menu function" dataSheets={DownloadChildnode(node)}
+                              element={<Typography>Export Children</Typography>}
+                                        />
+                          }
+                        </MenuItem>
+                        <MenuItem onClick={() => {
+                          handleClose();
+                          dispatch(showImportExcelDialog({ rootClass: 'w-full', columns: importMenuColumns, title: "Menu", subtitle: "Import file", submit: (data) => importChildToNode(node, data) }))
+
+                        }}>
+                          Import Menu
+                        </MenuItem>
+                      </Menu>
+                      </div>
+                      );
+                      };
+                      const menuColumns = [
+
+                      {
+                        width: 30,
+                        accessor: '_id',
+                        Cell: row => <div>
+                          <PopupState variant="popover" popupId="demo-popup-menu">
+                            {(popupState) => (
+                              <React.Fragment>
+                                <MoreVert {...bindTrigger(popupState)} />
+                                <Menu {...bindMenu(popupState)}>
+                                  <MenuItem onClick={() => { popupState.close(); dispatch(showEditDialog(convertDataToForm(row.original), handleSave, attributes)) }}>Sửa</MenuItem>
+                                  <MenuItem onClick={popupState.close}>Xóa</MenuItem>
+                                </Menu>
+                              </React.Fragment>
+                            )}
+                          </PopupState>
+
+                        </div>
+                      },
+                      ...quickTableColumns
+                      ];
+
+                      function handleSave(form) {
+                        const submitData = convertFormToData(form);
+                        Actions.save(submitData).then(response => {
+                          if (response.code === 0) {
+                            dispatch(showMessage({ message: "Lưu thông tin ban/menu thành công" }))
+                            //update menuList
+                            const anode = menuList.find(m => m._id == form._id);
+                            if (anode) {
+                              var keys = Object.keys(submitData);
+                              keys.forEach(function (k) {
+                                anode[k] = submitData[k];
+                              })
+                            } else {
+                              //add new
+                              refetchMenu();
+                              return;
+                            }
+                            //update the tree
+                            updateNodeFromTree(nodes, submitData);
+
+                            setNodes([...nodes]);
+                          }
+                        })
+                      }
+                      function convertFormToData(form) {
+                        return _.omit(form, ["children", "_children", "collapse", "costnodes", "fullName", "parent", 'developers']);
+                      }
+                      function convertDataToForm(data) {
+
+                        const form = { ...data };
+
+                        return form;
+                      }
+                      async function importChildToNode(node, data) {
+                        const sorted = _.sortBy(data.filter(d => d.level), function (d) { return parseInt(d.level) });
+
+                        // console.log("import child to node:", node, sorted);
+                        await _.asyncForEach(sorted, async (o) => {
+                          if (!o.saved) {
+                            const oldId = o._id;
+                            o._id = null;
+                            o.parentId = node._id;
+                            var response = await Actions.save(o,dispatch);
+                            console.log("response data=", response);
+                            if (response.data) {
+                              o.saved = true;
+                              o._id = response.data._id;
+                              const children = sorted.filter(c => c.parentId == oldId);
+                              if (children.length > 0) {
+                                await importChildToNode(o, children);
+                              }
+                            }
+
+                            // })
+
+
+                          } else {
+                            console.log("already saved:", o);
+                          }
+                        })
+                        refetchMenu();
+                      }
+                      return (
+                        <FusePageCarded
+                          classes={{
+                            content: "flex",
+                            header: "min-h-72 h-72 sm:h-136 sm:min-h-136"
+                          }}
+                          header={
+                            <div className="flex flex-1 w-full items-center justify-between el-HeaderPage">
+
+                              <div className="flex items-center">
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                  <Icon className="text-32 mr-0 sm:mr-12">business</Icon>
+                                </FuseAnimate>
+                                <FuseAnimate animation="transition.slideLeftIn" delay={300}>
+                                  <Typography className="hidden sm:flex" variant="h6">Sơ đồ cây chức năng</Typography>
+                                </FuseAnimate>
+                              </div>
+                              <FuseAnimateGroup>
+                                <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                  <Tooltip placement = "bottom" title = "Thêm lập trình viên">
+                                    <IconButton onClick={() => dispatch(
+                                      showQuickEditDialog({
+                                        rootClass: "sm:w-full md:w-1/3",
+                                        title: "Thêm mới",
+                                        submit: "Lập trình viên",
+                                        data: null,
+                                        attributes: DeveloperAttributes,
+                                        submit: saveDeveloper
+                                      }))}>
+                                      <Icon className = "el-TitleIcon">developer_mode</Icon>
+                                    </IconButton>
+                                  </Tooltip>
+                                </FuseAnimate>
+                                {
+                                  developers && developers.length > 0 && <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                    <Tooltip placement = "bottom" title = "Danh sách lập trình viên">
+                                      <IconButton onClick={() => dispatch(showDeveloperTable(developers, saveDeveloper))}>
+                                        <Icon className = "el-TitleIcon">developer_board</Icon>
+                                      </IconButton>
+                                    </Tooltip>
+                                  </FuseAnimate>
+                                }
+                                <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                  <Tooltip placement = "bottom" title = "Tải lại">
+                                    <IconButton onClick={refetchMenu}>
+                                      <Icon className = "el-TitleIcon">refresh</Icon>
+                                    </IconButton>
+                                  </Tooltip>
+                                </FuseAnimate>
+                                {
+                                  useMemo(() =>
+                                    <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                      <DownloadExcelMultiSheet className = "el-TitleIcon" name="menu function" dataSheets={[...DownloadCostNodes(_.sortBy(menuList.filter(m => m.costNode), function (o) { return o.fullName }))]} />
+                                    </FuseAnimate>
+                                  , [menuList])
+                                }
+                                {
+                                  menuList && menuList.length > 0 && <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                    <Tooltip placement = "bottom" title = "Danh sách menu">
+                                      <IconButton onClick={
+                                        () => dispatch(showQuickTableDialog({ rootClass: "w-full", columns: menuColumns, title: "Menu", subtitle: "Danh sách Menu", data: menuList }))}>
+                                        <Icon className = "el-TitleIcon">menu</Icon>
+                                      </IconButton>
+                                    </Tooltip>
+                                  </FuseAnimate>
+                                }
+
+                                <FuseAnimate animation="transition.slideRightIn" delay={300}>
+                                  <Button onClick={() => dispatch(showEditDialog(null, handleSave, attributes))} className="whitespace-no-wrap btn-blue" variant="contained">
+                                <span className="hidden sm:flex">Thêm chức năng</span>
+                            </Button>
+                        </FuseAnimate>
+                    </FuseAnimateGroup>
+                </div>
+            }
+            contentToolbar={
+                <div className="flex pl-16 w-full">
+                    <NativeSelect value={collapseLevel + ''} onChange={e => { e.target.value && e.target.value.length > 0 && handleChangeCollapse(parseInt(e.target.value)) }}>
+                        <option value=''>Expan Level</option>
+                        {
+                            [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => <option value={i + ''}>{i}</option>)
+                        }
+                    </NativeSelect>
+                    <FormControlLabel label="show deathline"
+                        control={<Checkbox
+                            checked={showDeathline}
+                            onChange={(e) => setShowDeathline(e.target.checked)}
+                        />}
+                    />
+                    <FormControlLabel label="show developer"
+                        control={<Checkbox
+                            checked={showDev}
+                            onChange={(e) => setShowDev(e.target.checked)}
+                        />}
+                    />
+
+                </div>
+            }
+            content={
+                <div className="el-cover-graph">
+
+                    {
+                        nodes && nodes.length > 0 ?
+                            <div className="el-orgchart-wrapper">
+                                {
+                                    nodes.map((item, index) =>
+                                        <div className="el-orgchart-container" key={index}>
+                                            {
+                                                item &&
+                                                <OrgChart tree={item} NodeComponent={MyNodeComponent} />
+                                            }
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            : <div className="flex flex-1 items-center justify-center h-full">
+                                <Typography color="textSecondary" variant="h5">
+                                    Chưa có dữ liệu cây
+                      </Typography>
+                            </div>
+                    }
+                    <div style={{ height: 100 }}>
+
+                    </div>
+                </div>
+            }
+        // innerScroll
+        />
+    );
+}
+
+export default (MenuGraph);

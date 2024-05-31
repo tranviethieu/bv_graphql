@@ -1,0 +1,57 @@
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import * as userActions from 'app/auth/store/actions';
+import { bindActionCreators } from 'redux';
+import * as Actions from 'app/store/actions';
+import { loadUserData } from './store/actions/user.actions'
+import elsagaService from 'app/services/elsagaService';//dòng lệnh này sẽ gọi hàm init trong file elsagaService.js
+
+//chúng ta sẽ xử lý chuyển hướng khi chưa login và xử lý notify trong hàm này
+class Auth extends Component {
+    /*eslint-disable-next-line no-useless-constructor*/
+    constructor(props)
+    {
+        super(props);
+        this.authenCheck();
+    }
+    authenCheck = () => {
+        //cách viết này tương tự như redux --> chắc là vẫn dùng redux chẳng qua nó đóng gói trong thư viện FuseUtil
+        elsagaService.on('onAutoLogout', (message) => {
+            if ( message )
+            {
+                this.props.showMessage({message});
+            }
+            this.props.logout();
+        });
+        elsagaService.on("onAutoLogin", () => {
+            this.props.showMessage({ message: 'Đang cập nhật thông tin tài khoản' });
+            loadUserData();
+        })
+        elsagaService.init();
+    }
+    
+
+    render()
+    {
+        const {children} = this.props;
+
+        return (
+            <React.Fragment>
+                {children}
+            </React.Fragment>
+        );
+    }
+}
+
+function mapDispatchToProps(dispatch)
+{
+    return bindActionCreators({
+            logout             : userActions.logoutUser,
+            setUserData        : userActions.setUserData,            
+            showMessage        : Actions.showMessage,
+            hideMessage        : Actions.hideMessage
+        },
+        dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(Auth);

@@ -1,0 +1,57 @@
+/* Extra small devices (phones, 600px and down) */
+/*Định dạng khi màn hình nhỏ hơn 480px*/
+@media only screen and (max-width: 480px) {
+	.col-sm-12{width: 100%;}
+	.logo{flex-direction: column; justify-content: center; align-items: center; margin-bottom:16px;}
+	.top-hotline ul li:last-child{display: none;}
+	.top-hotline li a{border-right: none;}
+
+}
+/*Định dạng khi màn hình nhỏ hơn 600px*/
+@media only screen and (max-width: 600px) {
+	.col-sm-12{width: 100%;}
+	.logo{flex-direction: column; justify-content: center; align-items: center; margin-bottom:16px;}
+	.hotline_bottom p{flex-direction: column; align-items: stretch;}
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/*Định dạng khi màn hình lớn hơn 600px*/
+@media only screen and (min-width: 600px) {
+
+}
+/* Medium devices to down (landscape tablets, 768px and down) */
+/*Định dạng khi màn hình nhỏ hơn 768px*/
+@media only screen and (max-width: 768px) {
+	.top-bar2{flex-direction: column; padding-bottom: 16px;}
+	.top-hotline ul li:first-child{display: none;}
+	.emergency{display: none;}
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+/*Định dạng khi màn hình lớn hơn 768px*/
+@media only screen and (min-width: 768px) {
+	
+}
+/* Large devices and down (laptops/desktops, 992px and down) */
+/*Định dạng khi màn hình nhỏ hơn 992px*/
+@media only screen and (max-width: 992px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+/*Định dạng khi màn hình lớn hơn 992px*/
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices down (large laptops and desktops, 1200px and down) */
+/*Định dạng khi màn hình nhỏ hơn 1200px*/
+@media only screen and (max-width: 1200px) {
+	
+
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+/*Định dạng khi màn hình lớn hơn 1200px*/
+@media only screen and (min-width: 1200px) {
+}

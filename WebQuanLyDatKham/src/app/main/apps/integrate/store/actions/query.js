@@ -1,0 +1,243 @@
+import gql from 'graphql-tag';
+
+export const MUTATION_SAVE_BOT_TEMPLATE = gql`
+mutation($_id:String!,$data:BotTemplateInput!){
+    response:updateBotTemplate(_id:$_id,data:$data){
+        code
+        message
+        data{
+            title
+            website
+            subtitle
+            image_url
+            enabled
+          }
+    }
+}
+`
+
+export const QUERY_INTEGRATED_ACCOUNT = gql`
+query ($type:IntegrateEnum){
+    response:integratedAccount(type:$type){
+        code
+        message
+        data{
+            _id
+            active
+            name      
+            type
+            template
+            sms_template{
+                apihost
+                brandname
+                provider
+                apihost
+                username
+                password
+                secretkey
+                cpcode
+                sign
+                vinaport
+                mobiport
+                gmobiport
+                viettelport
+                vnmport        
+              }
+            channels{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name                
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            } 
+        }
+    }
+}
+`
+
+export const QUERY_INTEGRATED_ACCOUNTS = gql`
+{
+    response:integratedAccounts{
+        code
+        message
+        data{
+            _id
+            active
+            name      
+            type
+            template            
+            channels{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            } 
+        }
+    }
+}
+`
+export const MUTATION_DISABLE_INTEGRATED_ACCOUNT = gql`
+mutation($_id:String!){
+    response:removeIntegratedAccount(_id:$_id){
+        code
+        message
+        data{
+            _id
+            active
+            name      
+            type      
+            template
+            channels{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            }       
+        }
+    }
+}
+`
+export const MUTATION_SAVE_INTEGRATED_ACCOUNT = gql`
+    mutation($data:IntegratedAccountInput!){
+        response:saveIntegratedAccount(data:$data){
+        code
+        message      
+        data{
+            _id
+            active
+            channels{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            } 
+            name
+            template
+            type
+        }
+        }
+    }
+`
+
+export const MUTATION_SAVE_INTEGRATE_CHANNELS = gql`
+    mutation($integratedId:String!, $data:[IntegratedChannelInput]){
+        response:saveIntegratedChannels(integratedId:$integratedId, data:$data){
+            code
+            message
+            data{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            }
+        }
+    }
+`
+
+export const MUTATION_SAVE_INTEGRATE_CHANNEL = gql`
+    mutation($data:IntegratedChannelInput!){
+        response:saveIntegratedChannel(data:$data){
+            code
+            message
+            data{
+                _id
+                accessToken
+                active
+                channelId
+                image
+                type
+                name
+                botOption{
+                    image_url
+                    subtitle
+                    title
+                    website
+                    enabled
+                }
+            }
+        }
+    }
+`
+export const MUTATION_SUBCRIBED_CHANNEL = gql`
+    mutation($_id:String!)
+    {
+        response:subscribeChannel(_id:$_id){
+            code
+            message
+            data{
+                _id
+                accessToken
+                active
+                name
+                channelId
+                type
+            }
+        }
+    }
+`
+export const MUTATION_UNSUBCRIBED_CHANNEL = gql`
+    mutation($_id:String!)
+    {
+        response:unsubscribeChannel(_id:$_id){
+            code
+            message
+            data{
+                _id
+                accessToken
+                active
+                name
+                channelId
+                type
+            }
+        }
+    }
+`

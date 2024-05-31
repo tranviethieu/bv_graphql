@@ -1,0 +1,433 @@
+import gql from 'graphql-tag';
+
+export const MUTATION_CREATE_ASSIGN_JOB = gql`
+mutation($linked: LinkableObjectInput!,$members:[AssignmentMemberInput]!,$info:String ){
+    response: assign_job_on_social_user(linked: $linked,members:$members,info:$info){
+        code
+        message
+    }
+}
+`
+
+export const GET_ASSIGNABLE_ACCOUNT = gql`
+{
+    response:assignable_account{
+      code
+      message
+      data{
+        _id
+        base{
+          fullName
+          work
+          code
+          departmentName
+        }
+      }
+    }
+  }
+`
+
+export const MUTATION_SEND_OPEN_CHANNEL_MESSAGE = gql`
+    mutation($data:MessageInput!){
+        response:send_openchannel(data:$data){
+            code
+            message
+            data{
+                _id
+              	account{
+                    _id
+                    base{
+                      address
+                      avatar
+                      birthday
+                      email
+                      fullName
+                      gender
+                      isRoot
+                      mariaged
+                      name
+                    }
+                }
+              channel_id
+              createdTime
+              direction
+              refId
+              type
+              uid
+              body{
+                attachments{
+                  type
+                  url
+                  fileInfo{
+                    createdTime
+                    isValid
+                    name
+                    options{
+                        duration
+                        type
+                        view
+                    }
+                    oriExtension
+                    updatedTime
+                  }
+                }
+                text
+              }
+            }
+        }
+    }
+`
+export const QUERY_GET_INTEGRATED_CONVERSATIONS = gql`
+    query($page: Int!, $pageSize:Int!, $filtered: [FilteredInput], $sorted: [SortedInput])
+    {
+        response:integratedUsers(page: $page, pageSize:$pageSize, filtered: $filtered, sorted: $sorted){
+            code
+            message
+            page
+            pages
+            records
+            data{
+                _id
+                about
+                avatar
+                createdTime
+                last_view
+                link
+                name
+                channel{
+                    _id
+                    channelId
+                    image
+                    name
+                }
+                user{
+                    _id
+                    fullName
+                    phoneNumber
+                    email
+                }
+                recent_message{
+                    _id
+                    account{
+                        _id
+                      base{
+                        name
+                        fullName
+                      }
+                    }
+                    body{
+                        text
+                        attachments{
+                            type
+                            url
+                            fileInfo{
+                                _id
+                                createdTime
+                                isValid
+                                name
+                                options{
+                                    duration
+                                    type
+                                    view
+                                }
+                                oriExtension
+                                updatedTime
+                            }
+                        }
+                    }
+                    channel_id
+                    createdTime
+                    type
+                    uid
+                    refId
+                }
+                type
+                uid
+                unread
+                updatedTime
+            }
+        }
+    }
+`
+export const QUERY_GET_CONVERSATION_MESSAGES = gql`
+    query($page:Int, $pageSize:Int!, $integratedId:String!){
+        response:integratedMessages(page:$page, pageSize: $pageSize,integratedId: $integratedId)
+        {
+            code
+            message
+            page
+            pages
+            records
+            data{
+                _id
+              	account{
+                  _id
+                    base{
+                      address
+                      avatar
+                      birthday
+                      email
+                      fullName
+                      gender
+                      isRoot
+                      mariaged
+                      name
+                    }
+                }
+              channel_id
+              createdTime
+              direction
+              refId
+              type
+              uid
+              body{
+                attachments{
+                  type
+                  url
+                  fileInfo{
+                    _id
+                    createdTime
+                    isValid
+                    name
+                    options{
+                        duration
+                        type
+                        view
+                    }
+                    oriExtension
+                    updatedTime
+                  }
+                }
+                text
+              }
+            }
+        }
+    }
+`
+export const QUERY_GET_INTEGRATE_CHAT_APPS = gql`
+    query getChatApp{
+    response:integratedChatAccounts{
+            code
+            message
+            data
+            {
+                _id
+                active
+                channels{
+                    _id
+                    accessToken
+                    active
+                    channelId
+                    image
+                    isExchangedToken
+                    name
+                    type
+                }
+                name
+                template
+                type
+            }
+        }
+    }
+`
+export const QUERY_GET_USER_INFO = gql`
+    query userByPhone($phoneNumber:String!)
+    {
+        response:userByPhone(phoneNumber:$phoneNumber){
+            code
+            message
+            data{
+                _id
+                address
+                appointments
+                avatar
+                birthDay
+                createdTime
+                email
+                firstName
+                fullName
+                gender
+                lastName
+                mariage
+                middleName
+                name
+                options
+                patients{
+                    _id
+                    createdTime
+                    data
+                    name
+                    patientId
+                    phoneNumber
+                    updatedTime
+                }
+                phoneNumber
+                servedAppointments
+                work
+            }
+        }
+    }
+`
+
+export const QUERY_GET_INTEGRATED_USER = gql`
+    query getIntegratedUser($uid: String!, $type: IntegrateEnum!)
+    {
+        response:integratedUser(uid: $uid, type: $type)
+        {
+            code
+            message
+            data{
+                _id
+                about
+                avatar
+                createdTime
+                last_view
+                link
+                name
+                channel{
+                    _id
+                    channelId
+                    image
+                    name
+                }
+                user{
+                _id
+                fullName
+                phoneNumber
+                email
+                }
+                recent_message{
+                    _id
+                    account{
+                        _id
+                      base{
+                        name
+                        fullName
+                      }
+                    }
+                    body{
+                        text
+                        attachments{
+                            type
+                            url
+                            fileInfo{
+                                _id
+                                createdTime
+                                isValid
+                                name
+                                options{
+                                    duration
+                                    type
+                                    view
+                                }
+                                oriExtension
+                                updatedTime
+                            }
+                        }
+                    }
+                    channel_id
+                    createdTime
+                    type
+                    uid
+                    refId
+                }
+                type
+                uid
+                unread
+                updatedTime
+            }
+        }
+    }
+
+`
+export const MUTATION_UPDATE_INTEGRATED_USER_PHONE_NUMBER = gql`
+    mutation updateIntegratedPhone($_id: String!, $phoneNumber:String!)
+{
+  response:updatePhoneIntegratedUser(_id: $_id, phoneNumber: $phoneNumber)
+  {
+    code
+    message
+      data{
+            _id
+            about
+            avatar
+            createdTime
+            last_view
+            link
+            name
+            channel{
+                _id
+                channelId
+                image
+                name
+            }
+            user{
+            _id
+            fullName
+            phoneNumber
+            email
+            }
+            recent_message{
+                _id
+                account{
+                  _id
+                    base{
+                      name
+                      fullName
+                    }
+                }
+                body{
+                    text
+                    attachments{
+                        type
+                        url
+                        fileInfo{
+                            _id
+                            createdTime
+                            isValid
+                            name
+                            options{
+                                duration
+                                type
+                                view
+                            }
+                            oriExtension
+                            updatedTime
+                        }
+                    }
+                }
+                channel_id
+                createdTime
+                type
+                uid
+                refId
+            }
+            type
+            uid
+            unread
+            updatedTime
+        }
+  }
+}
+`
+//query job theo id
+export const QUERY_JOB_ASSIGNMENT = gql`
+  query($_id: String!){
+    response: job_assignment(_id: $_id){
+      code
+      message
+      data{
+        state
+      }
+    }
+  }
+`
+//Cập nhật trạng thái công việc
+export const MUTATION_UPDATE_STATE_JOB = gql`
+mutation($_id: String!, $state: JobAssignmentState ){
+    response: update_job_state(_id: $_id, state: $state){
+        code
+        message
+    }
+}
+`

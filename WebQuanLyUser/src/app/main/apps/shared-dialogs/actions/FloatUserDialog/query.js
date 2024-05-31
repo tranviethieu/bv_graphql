@@ -1,0 +1,196 @@
+import gql from 'graphql-tag';
+
+export const MUTATION_SAVE_USER = gql`
+mutation($data:UserInput!){
+  response:saveUser(data:$data){
+    code
+    message
+    data{
+      fullName
+      _id
+      address
+      avatar
+      birthDay
+      phoneNumber
+      email
+      gender
+      mariage
+      name
+      nationIdentification
+      insuranceCode
+      street
+      work{
+        code
+        name
+      }
+      nation{
+        code
+        name
+      }
+      nationality{
+        code
+        name
+      }
+    }
+  }
+}
+`
+
+export const QUERY_USER_HISTORY = gql`
+query($filtered:[FilteredInput],$page:Int,$pageSize:Int){
+  response:userActions(sorted:[{id:"updatedTime",desc:true}],filtered:$filtered,page:$page,pageSize:$pageSize){
+  code
+  records
+  pages
+  message
+  data{
+    _id
+    survey_result{
+      survey{
+        _id
+        name
+        title
+        questionIds
+      }
+      data{
+        channel
+        data
+        questionId
+        required
+      }
+    }
+    data
+    appointment{
+      appointmentDate
+      appointmentTime
+      channel
+      department{
+        name
+        _id
+      }
+      state
+      note
+    }
+    updatedTime
+    createdTime
+    action
+    modifier{
+      _id
+      action
+      account{
+        base{
+          fullName
+          avatar
+        }
+      }
+    }
+  }
+}}
+`
+
+export const QUERY_USER_BY_PHONE = gql`
+query($phoneNumber:String!){
+    response:userByPhone(phoneNumber:$phoneNumber){
+      code
+      message
+      data{
+        fullName
+        _id
+        address
+        avatar
+        birthDay
+        phoneNumber
+        email
+        gender
+        mariage
+        name
+        nationIdentification
+        insuranceCode
+        work{
+          code
+          name
+        }
+        street
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+      }
+    }
+  }
+`
+export const QUERY_USER_BY_ID = gql`
+query($_id:String!){
+    user(_id:$_id){
+      code
+      message
+      data{
+        fullName
+        _id
+        address
+        avatar
+        birthDay
+        phoneNumber
+        email
+        gender
+        mariage
+        name
+        street
+        nationIdentification
+        insuranceCode
+        work{
+          code
+          name
+        }
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+      }
+    }
+  }
+`
+export const QUERY_NATIONS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:nations(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`
+export const QUERY_WORKS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:works(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`
+export const QUERY_NATIONALITYS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:nationalitys(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`

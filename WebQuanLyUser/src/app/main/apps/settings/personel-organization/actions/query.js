@@ -1,0 +1,220 @@
+import gql from 'graphql-tag'
+
+export const GET_ACCOUNTS = gql`
+{
+  response:accounts{
+    code
+    message
+    data{
+      _id
+      department
+      base{
+        code
+        fullName
+        title
+      }
+    }
+  }
+}
+`
+
+export const MUTATION_SAVE_PERSONEL = gql`
+mutation($data: OrganizationInput){
+    response: saveOrganization(data: $data){
+        code
+        message
+    }
+}
+`
+export const MUTATION_REMOVE_PERSONEL = gql`
+mutation($_id: String!){
+    response: removeOrganization(_id: $_id){
+        code
+        message
+    }
+}
+`
+export const QUERY_GET_PERSONELS_CHART = gql`
+query{
+    response: organizationGraph{
+        code
+        message
+        data{
+          _id
+          priority
+          description
+          level
+          name
+          fullName
+          parentId 
+          leaderId
+          leader{
+            base{
+              title
+              fullName
+              avatar work
+            }
+          }
+          parent{
+            _id
+            fullName
+            name
+          }         
+          children{
+            _id
+            priority
+            description
+            level
+            name
+            fullName
+            parentId 
+            leaderId
+            leader{
+              base{
+                title
+                fullName
+                avatar work
+              }
+            }
+            parent{
+              _id
+              fullName
+              name
+            }
+            children{
+              _id
+              priority
+              description
+              level
+              name
+              fullName
+              parentId 
+              leaderId
+              leader{
+                base{
+                  title
+                  fullName
+                  avatar work
+                }
+              }
+              parent{
+                _id
+                fullName
+                name
+              } 
+              children{
+                _id
+                priority
+                description
+                level
+                name
+                fullName
+                parentId 
+                leaderId
+                leader{
+                  base{
+                    title
+                    fullName
+                    avatar work
+                  }
+                }
+                parent{
+                  _id
+                  fullName
+                  name
+                } 
+                children{
+                  _id
+                  priority
+                  description
+                  level
+                  name
+                  fullName
+                  parentId 
+                  leaderId
+                  leader{
+                    base{
+                      title
+                      fullName
+                      avatar work
+                    }
+                  }
+                  parent{
+                    _id
+                    fullName
+                    name
+                  } 
+                  children{
+                    _id
+                    priority
+                    description
+                    level
+                    name
+                    fullName
+                    parentId 
+                    leaderId
+                    leader{
+                      base{
+                        title
+                        fullName
+                        avatar work
+                      }
+                    }
+                    parent{
+                      _id
+                      fullName
+                      name
+                    } 
+                    children{
+                      _id
+                      priority
+                      description
+                      level
+                      name
+                      fullName
+                      parentId 
+                      leaderId
+                      leader{
+                        base{
+                          title
+                          fullName
+                          avatar work
+                        }
+                      }
+                      parent{
+                        _id
+                        fullName
+                        name
+                      } 
+                      children{
+                        _id
+                        priority
+                        description
+                        level
+                        name
+                        fullName
+                        parentId 
+                        leaderId
+                        leader{
+                          base{
+                            title
+                            fullName
+                            avatar work
+                          }
+                        }
+                        parent{
+                          _id
+                          fullName
+                          name
+                        } 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+}
+`

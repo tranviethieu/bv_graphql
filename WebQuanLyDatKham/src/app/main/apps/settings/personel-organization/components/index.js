@@ -1,0 +1,1 @@
+export { organizationAttributes } from './OrganizationAttributes';

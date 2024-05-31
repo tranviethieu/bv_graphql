@@ -1,0 +1,648 @@
+import gql from 'graphql-tag';
+
+export const GET_PROJECTS = gql`
+{
+  response:projects{
+    code
+    message
+    data{
+      _id
+      name
+    }
+  }
+}
+`
+
+export const DEVELOPERS = gql`
+{
+  response:developers{
+    code
+    message
+    data{
+      _id
+      name
+      phoneNumber
+      email
+      rank
+    }
+  }
+}
+`
+export const SAVE_DEVELOPER = gql`
+mutation($data:DeveloperInput){
+  response:save_developer(data:$data){
+    code
+    message
+    data{
+      _id
+    }
+  }
+}
+`
+export const REMOVE_DEVELOPER = gql`
+mutation($_id:String!){
+  response:remove_developer(_id:$_id){
+    code
+    message
+  }
+}
+`
+export const GET_PERMISSIONS = gql`
+{
+  response:apis(group:true){
+    code
+    message
+    data{
+      title
+      shortTitle
+      permission
+    }
+  }
+}
+`
+
+export const SAVE_MENU = gql`
+mutation($data:MenuInput){
+    response:saveMenu(data:$data){
+      code
+      message  
+      data{
+        _id
+      } 
+    }
+  }
+`
+
+export const REMOVE_MENU = gql`
+mutation($_id:String!){
+    response:removeMenu(_id:$_id){
+        code
+        message
+    }
+}
+`
+export const GET_MENU = gql`
+query($_id:String!){
+    response:menu(_id:$_id){
+      code
+      message
+      data{
+        _id
+        permissions
+        subPermissions
+        description
+        icon
+        name
+        shortcutAction
+        parentId
+        path
+        priority
+        type  
+      }
+    }
+  }
+`
+export const GET_QUICK_ALL_MENU = gql`
+{
+  response:menus(sorted:[{id:"priority",desc:false},{id:"level",desc:false}]){
+    code
+    message
+    data{
+      _id
+      fullName
+    }
+  }
+}
+`
+export const GET_MENU_BY_GROUP = gql`
+query($groupId:String!){
+    response:menus_by_accountgroup(groupId:$groupId){
+      code
+      message
+      data{
+        _id
+        permissions
+        subPermissions
+        description
+        icon
+        name
+        fullName
+        parentId
+        level
+        path
+        type
+        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+        deathline
+        startTime
+        process
+        effortHour
+        priority
+        parent{
+          name
+        }
+      }
+    }
+  }
+`
+
+export const GET_MENU_ALL = gql`
+{
+    response:menus(sorted:[{id:"level",desc:false},{id:"priority",desc:false},{id:"name",desc:false}]){
+      code
+      message
+      data{
+        _id
+        permissions
+        subPermissions
+        description
+        icon
+        name
+        fullName
+        parentId
+        level
+        path
+        type
+        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+        deathline
+        startTime
+        process
+        effortHour
+        priority
+        devIds
+        developers{
+          _id
+          name
+        }
+        parent{
+          name
+        }
+      }
+    }
+  }
+`
+export const GET_MENU_GRAPH = gql`
+{
+    response:menuGraph{
+      code
+      message
+      data{
+        _id
+        permissions
+        subPermissions
+        type
+        parentId
+        priority
+        level
+        path
+        icon
+        name
+        fullName
+        description        
+        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+        deathline
+        startTime
+        process
+        effortHour
+        devIds
+        projectId
+        developers{
+          _id
+          name
+        }
+        children{
+          _id
+          name
+          projectId
+          fullName
+          path
+          type
+          parentId
+          priority
+          permissions
+          subPermissions
+          level
+          icon
+          description
+          costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+          deathline
+          startTime
+          process
+          effortHour
+          devIds
+          developers{
+            _id
+            name
+          }
+          children{
+            _id
+            name
+            projectId
+            fullName
+            path
+            type
+            icon
+            parentId
+            permissions
+            subPermissions
+            priority
+            level
+            description
+            costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+            deathline
+            startTime
+            process
+            effortHour
+            devIds
+            developers{
+              _id
+              name
+            }
+            children{
+              _id
+              icon
+              name
+              projectId
+              fullName
+              path
+              type
+              parentId
+              priority
+              permissions
+              subPermissions
+              level
+              description
+              costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+              deathline
+              startTime
+              process
+              effortHour
+              devIds
+              developers{
+                _id
+                name
+              }
+              children{
+                _id
+                name
+                projectId
+                fullName
+                path
+                icon
+                permissions
+                subPermissions
+                type
+                parentId
+                priority
+                level
+                description
+                costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                deathline
+                startTime
+                process
+                effortHour
+                devIds
+                developers{
+                  _id
+                  name
+                }
+                children{
+                  _id
+                  name
+                  projectId
+                  fullName
+                  path
+                  permissions
+                  subPermissions
+                  parentId
+                  priority
+                  level
+                  icon
+                  type
+                  description
+                  costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                  deathline
+                  startTime
+                  process
+                  effortHour
+                  devIds
+                  developers{
+                    _id
+                    name
+                  }
+                  children{
+                    _id
+                    icon
+                    name
+                    projectId
+                    fullName
+                    path
+                    permissions
+                    subPermissions
+                    type
+                    parentId
+                    priority
+                    level
+                    description
+                    costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                    deathline
+                    startTime
+                    process
+                    effortHour
+                    devIds
+                    developers{
+                      _id
+                      name
+                    }
+                    children{
+                      _id
+                      icon
+                      name
+                      projectId
+                      fullName
+                      path
+                      permissions
+                      subPermissions
+                      type
+                      parentId
+                      priority
+                      level
+                      description
+                      costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                      deathline
+                      startTime
+                      process
+                      effortHour
+                      devIds
+                      developers{
+                        _id
+                        name
+                      }
+                      children{
+                        _id
+                        icon
+                        name
+                        projectId
+                        fullName
+                        path
+                        permissions
+                        subPermissions
+                        type
+                        parentId
+                        priority
+                        level
+                        description
+                        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                        deathline
+                        startTime
+                        process
+                        effortHour
+                        devIds
+                        developers{
+                          _id
+                          name
+                        }
+                        children{
+                          _id
+                          icon
+                          name
+                          projectId
+                          fullName
+                          path
+                          permissions
+                          subPermissions
+                          type
+                          parentId
+                          priority
+                          level
+                          description
+                          costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                          deathline
+                          startTime
+                          process
+                          effortHour
+                          devIds
+                          developers{
+                            _id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+
+export const GET_MENU_GRAPH_BY_GROUP = gql`
+query($groupId:String!){
+    response:menu_graph_by_accountgroup(groupId:$groupId){
+      code
+      message
+      data{
+        _id
+        permissions
+        subPermissions
+        type
+        parentId
+        priority
+        level
+        path
+        icon
+        name
+        description        
+        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+        deathline
+        startTime
+        process
+        effortHour
+        children{
+          _id
+          name
+          path
+          type
+          parentId
+          priority
+          permissions
+          subPermissions
+          level
+          icon
+          description
+          costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+          deathline
+          startTime
+          process
+          effortHour
+          children{
+            _id
+            name
+            path
+            type
+            icon
+            parentId
+            permissions
+            subPermissions
+            priority
+            level
+            description
+            costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+            deathline
+            startTime
+            process
+            effortHour
+            children{
+              _id
+              icon
+              name
+              path
+              type
+              parentId
+              priority
+              permissions
+              subPermissions
+              level
+              description
+              costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+              deathline
+              startTime
+              process
+              effortHour
+              children{
+                _id
+                name
+                path
+                icon
+                permissions
+                subPermissions
+                type
+                parentId
+                priority
+                level                
+                description
+                costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                deathline
+                startTime
+                process
+                effortHour
+                children{
+                  _id
+                  name
+                  path
+                  permissions
+                  subPermissions                  
+                  priority
+                  level
+                  icon
+                  type
+                  parentId
+                  description
+                  costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                  deathline
+                  startTime
+                  process
+                  effortHour
+                  children{
+                    _id
+                    icon
+                    name
+                    path
+                    permissions
+                    subPermissions
+                    type
+                    parentId
+                    priority
+                    level
+                    description
+                    costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                    deathline
+                    startTime
+                    process
+                    effortHour
+                    children{
+                      _id
+                      icon
+                      name
+                      path
+                      permissions
+                      subPermissions
+                      type
+                      parentId
+                      priority
+                      level
+                      description
+                      costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                      deathline
+                      startTime
+                      process
+                      effortHour
+                      children{
+                        _id
+                        icon
+                        name
+                        path
+                        permissions
+                        subPermissions
+                        type
+                        parentId
+                        priority
+                        level
+                        description
+                        costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                        deathline
+                        startTime
+                        process
+                        effortHour
+                        children{
+                          _id
+                          icon
+                          name
+                          path
+                          permissions
+                          subPermissions
+                          type
+                          parentId
+                          priority
+                          level
+                          description
+                          costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                          deathline
+                          startTime
+                          process
+                          effortHour
+                          children{
+                            _id
+                            icon
+                            name
+                            path
+                            permissions
+                            subPermissions
+                            type
+                            parentId
+                            priority
+                            level
+                            description
+                            costNode costnodes{_id name startTime deathline process effortHour level fullName parent{name} developers{_id name rank} description}
+                            deathline
+                            startTime
+                            process
+                            effortHour
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`

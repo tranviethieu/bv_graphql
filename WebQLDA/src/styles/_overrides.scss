@@ -1,0 +1,111 @@
+.nav-item {
+  .nav-link {
+    display: flex;
+    align-items: center;
+
+    &.active {
+      color: #273c75 !important;
+      font-weight: bold;
+      border-right: 5px solid #273c75;
+      
+    }
+  }
+}
+
+.sidebar .nav a {
+  transition: all 150ms ease-in;
+}
+
+.card-header {
+  text-transform: uppercase;
+}
+
+.badge:empty {
+  display: inline-block;
+}
+
+body{
+  font-size: $base-font;
+  font-family: "Open Sans", Arial, sans-serif ;
+}
+
+  h1, .h1{
+  font-size: 2.1rem; }
+
+  h2, .h2 {
+  font-size: 1.95rem; }
+
+  h3, .h3 {
+  font-size: 1.75rem; }
+
+  h4, .h4 {
+  font-size: 1.45rem; }
+
+  h5, .h5 {
+  font-size: 1.25rem; }
+  h6, .h6{
+    font-size: .95rem; }
+.modal-header .close{
+  position: absolute;
+  top:1rem;
+  right: 1rem;
+}
+.cr-page__title{
+  margin-bottom: 1.3rem !important;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.1rem;
+}
+.cr-page .row .col, .cr-page .row > [class^="col-"] {
+  margin-bottom: 0.2rem !important;
+}
+.cr-page .row{
+  margin-bottom: 0.5rem !important;
+}
+.btn{
+  font-size: 0.7rem;
+}
+.ReactTable .rt-thead.-header{
+  // background-color: #333;
+  text-transform: uppercase;
+  // color:white;
+}
+.ReactTable .rt-thead .rt-th{
+  padding:13px 5px !important;
+  line-height: 1.2rem !important;
+  // border-right: none !important;
+  font-weight: bold;
+}
+
+.ReactTable .rt-td{
+  padding: 10px 5px 2px 10px !important;
+  white-space: inherit !important;
+}
+.ReactTable .rt-thead.-filters input, .ReactTable .rt-thead.-filters select{
+  line-height: 17px;
+}
+.navbar{
+  padding:0.5rem 1rem 0.5rem 0 !important;
+}
+.ReactTags__suggestions{
+  z-index: 999;
+}
+// .ReactTable{
+//   border:none !important;
+// }
+.card-body{
+  padding:0.25rem 0.5rem 0.5rem 0.5rem !important;
+}
+.card,.card-header{
+  border-radius: 0 !important;
+}
+label {
+  margin-bottom: 0 !important;
+}
+.react-tabs__tab{
+  font-size: 11px;
+}
+.react-tabs__tab--selected{
+  color:#273c75 !important;
+  font-weight: bold;
+}

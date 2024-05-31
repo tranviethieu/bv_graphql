@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="512px" height="512px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+<g>
+	<path fill="#FFFFFF" d="M256,512c141.576,0,256-114.389,256-256C512,114.42,397.607,0,256,0C114.424,0,0,114.39,0,256
+		C0,397.58,114.393,512,256,512z M256,30c124.617,0,226,101.383,226,226S380.617,482,256,482S30,380.617,30,256S131.383,30,256,30z"
+		/>
+	<path fill="#FFFFFF" d="M241,61h30v30h-30V61z"/>
+	<path fill="#FFFFFF" d="M61,241h30v30H61V241z"/>
+	<path fill="#FFFFFF" d="M421,241h30v30h-30V241z"/>
+	<path fill="#FFFFFF" d="M241,421h30v30h-30V421z"/>
+	<path fill="#FFFFFF" d="M147.523,385.604l112.211-134.655l75.659,75.659l21.213-21.215l-77.587-77.585l18.504-22.204
+		l-23.047-19.206l-16.758,20.109l-21.113-21.113l-21.212,21.214l23.041,23.041L124.477,366.396L147.523,385.604z"/>
+</g>
+</svg>

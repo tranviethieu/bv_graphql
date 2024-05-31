@@ -1,0 +1,111 @@
+import gql from 'graphql-tag';
+//chi goi cac appointment kham vao ngay hom nay va da duoc duyet, luc nay inputPatient chinh la patient trong his
+export const GET_MEDICAL_SESSIONS = gql`
+query($filtered:[FilteredInput],$sorted:[SortedInput],$page:Int,$pageSize:Int){
+  response:medical_sessions(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+    code
+    message
+    records
+    pages
+    data{
+      _id
+      code
+      doctor{
+        code
+        name
+      }
+      indications{
+        service{
+          code
+          name
+        }
+        service_detail{
+          name
+        }
+        department{
+          name
+          code
+        }
+        clinic{
+          name
+          code
+        }
+        doctor{
+          fullName
+        }
+      }
+      createdTime
+      appointment{
+        channel
+        code
+        departmentId
+        department{
+          name
+        }
+        appointmentDate
+        appointmentTime
+        createdTime
+      }
+      conclusions{
+        code
+        name
+      }
+      createdTime
+      insuranceCode
+      patientInfo{
+        _id
+        patientCode
+        fullName
+        birthDay
+        phoneNumber
+        nationIdentification
+        insuranceCode
+        work{
+          name
+        }
+        ward{
+          name
+        }
+        province{
+          name
+        }
+        district{
+          name
+        }
+        nationality{
+          name
+        }
+        street
+        gender
+      }
+      process
+      reason
+      sequence
+      terminated
+      terminateReason
+      department{
+        code
+        name
+      }
+      clinic{
+        code
+        name
+      }
+    }
+  }
+}
+`
+
+export const GET_DEPARTMENTS = gql`
+query{
+  response: departments {
+    code
+    message
+    data {
+     _id
+     name
+     code
+    }
+  }
+}
+`

@@ -1,0 +1,134 @@
+import gql from 'graphql-tag';
+
+export const CHANGE_ACCOUNT_GROUP = gql`
+mutation($groupId:String!){
+  response:change_default_group(groupId:$groupId){
+    code
+    message
+    data
+  }
+}
+`
+
+//load hồ sơ của tôi
+export const ME = gql`
+{
+  response:me{
+    code
+    message
+    data{
+      _id
+      department
+      sipPhone
+      sipPhones
+      sipPassword
+      isWebRtc
+      defaultGroup{
+        name
+        permissions
+        _id
+      }
+      defaultGroupId
+      accountGroupIds
+      groupPermissions{
+      	_id
+        name
+      }
+      menuGraph(appId:"${process.env.REACT_APP_APP_ID}"){
+        id:_id
+        title:name
+        icon
+        url:path
+        type
+        shortcutAction
+        children{
+          id:_id
+          title:name
+          icon
+          url:path
+          type
+          shortcutAction
+          children{
+            id:_id
+            title:name
+            icon
+            url:path
+            type
+            shortcutAction
+            children{
+              id:_id
+              title:name
+              icon
+              url:path
+              type
+              shortcutAction
+            }
+          }
+        }
+      }
+      base{
+        departmentName
+        avatar
+        address
+        birthday
+        code
+        departmentId
+        sub
+        fullName
+        email
+        gender
+        certificate
+        nationIdentity
+        isRoot
+        mariaged
+        title
+        userName
+        work
+      }
+    }
+  }
+}
+`
+
+export const MUTATION_REGISTER_DEVICE = gql`
+mutation($data:DeviceInput!){
+  response:registerDevice(data:$data){
+    code
+    message
+  }
+}
+`
+
+export const QUERY_VERIFY_TOKEN = gql`
+query($token:String!){
+  response:loginByToken(token:$token){
+    code
+    message
+    data{
+      _id
+      department
+      sipPhone
+      sipPhones
+      sipPassword
+      isWebRtc
+      role
+      base{
+        avatar
+        address
+        birthday
+        code
+        departmentId
+        sub
+        fullName
+        email
+        gender
+        isRoot
+        mariaged
+        title
+        work
+      }
+
+    }
+  }
+}
+`

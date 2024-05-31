@@ -1,0 +1,440 @@
+import gql from 'graphql-tag';
+
+export const CREATE_APPOINTMENT = gql`
+mutation($data:AppointmentDataInput!){
+    response:createAppointment(data:$data){
+      code
+      message
+    }
+  }
+`
+export const GET_TIMEFRAME = gql`
+query($_id:String!,$date:DateTime!){
+  response:department(_id:$_id){
+    code
+    message
+    data{
+      timeFrame:servtime_on_date(date:$date)
+    }
+  }
+}
+`
+
+export const GET_DEPARTMENTS = gql`
+{
+  response:departments{
+    code
+    message
+    data{
+      _id
+      name
+      code
+    }
+  }
+}
+`
+
+export const UPDATE_APPOINTMENT_STATE = gql`
+mutation($_id:String!,$state:AppointmentState,$terminateReason:String){
+  response:changeAppointmentState(_id:$_id,state:$state,terminateReason:$terminateReason){
+    code
+    message
+    data
+  }
+}
+`
+
+export const GET_PATIENT = gql`
+query($patientCode:String!){
+  response:patient(patientCode:$patientCode){
+      code
+      message
+      data{
+        _id
+        fullName
+        birthDay
+        lastName
+        firstName
+        middleName
+        birthYear
+        phoneNumber
+        nation{
+          code
+          name
+        }
+        nationality{
+          code
+          name
+        }
+        district{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        ward{
+          code
+          name
+        }
+        gender
+        street
+        address
+        insuranceCode
+        patientCode
+        work{
+          code
+          name
+        }
+      }
+    }
+}
+`
+
+export const UPDATE_PATIENT = gql`
+mutation($data:UserInput!){
+  response:update_patient(data:$data){
+    code
+    message
+    data{
+      patientCode
+    }
+  }
+}
+`
+
+export const SEARCH_HIS_PATIENTS = gql`
+query($data:PatientInfoInput){
+  response:search_his_patients(data:$data){
+    code
+    message
+    records
+    data{
+      _id
+      fullName
+      lastName
+      firstName
+      middleName
+      phoneNumber
+      birthDay
+      nation{
+        code
+        name
+      }
+      nationality{
+        code
+        name
+      }
+      district{
+        code
+        name
+      }
+      province{
+        code
+        name
+      }
+      ward{
+        code
+        name
+      }
+      gender
+      street
+      address
+      insuranceCode
+      patientCode
+      work{
+        code
+        name
+      }
+    }
+  }
+}
+`
+
+export const MUTATION_SAVE_USER = gql`
+mutation($data:UserInput!, $offline: Boolean){
+  response:saveUser(data:$data, offline: $offline){
+    code
+    message
+    data{
+      fullName
+      _id
+      address
+      lastName
+      firstName
+      middleName
+      avatar
+      birthDay
+      phoneNumber
+      email
+      gender
+      mariage
+      name
+      work{
+        code
+        name
+      }
+    }
+  }
+}
+`
+
+export const QUERY_USER_BY_PHONE = gql`
+query($phoneNumber:String!){
+    response:userByPhone(phoneNumber:$phoneNumber){
+      code
+      message
+      data{
+        fullName
+        lastName
+        firstName
+        middleName
+        _id
+        address
+        avatar
+        patientCode
+        birthDay
+        phoneNumber
+        email
+        gender
+        mariage
+        name
+        work{
+          code
+          name
+        }
+        street
+        nationIdentification
+        nationality{
+          code
+          name
+        }
+        nation{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        ward{
+          code
+          name
+        }
+        district{
+          code
+          name
+        }
+        insuranceCode
+      }
+    }
+  }
+`
+export const QUERY_USER_BY_ID = gql`
+query($_id:String!){
+    user(_id:$_id){
+      code
+      message
+      data{
+        fullName
+        lastName
+        firstName
+        middleName
+        _id
+        address
+        avatar
+        birthDay
+        phoneNumber
+        email
+        gender
+        mariage
+        name
+        work{
+          code
+          name
+        }
+        street
+        nationIdentification
+        nationality{
+          code
+          name
+        }
+        nation{
+          code
+          name
+        }
+        province{
+          code
+          name
+        }
+        ward{
+          code
+          name
+        }
+        district{
+          code
+          name
+        }
+        insuranceCode
+      }
+    }
+  }
+`
+
+export const QUERY_WARDS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:wards(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+        code
+        message
+        data{
+          name
+          code
+      }
+  }
+}
+`
+export const QUERY_NATIONS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:nations(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`
+export const QUERY_WORKS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:works(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`
+export const QUERY_NATIONALITYS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:nationalitys(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        code
+        name
+      }
+    }
+  }
+`
+export const QUERY_PROVINCES = gql`
+{
+    response:provinces{
+      code
+      message
+      data{
+        name
+        code
+      }
+    }
+  }
+`
+export const QUERY_DISTRICTS = gql`
+query($page:Int,$pageSize:Int,$filtered:[FilteredInput],$sorted:[SortedInput]){
+    response:districts(page:$page,pageSize:$pageSize,filtered:$filtered,sorted:$sorted){
+      code
+      message
+      data{
+        name
+        code
+      }
+    }
+  }
+`
+
+export const GET_APPOINTMENT_DETAIL = gql`
+query($_id:String!){
+    response:appointment(_id:$_id){
+      code
+      message
+      data{
+        _id
+        appointmentDate
+        appointmentTime
+        patientCode
+        patient{
+          _id
+        }
+        inputPatient{
+          lastName
+          firstName
+          middleName
+          fullName
+          birthDay
+          address
+          phoneNumber
+          gender
+          ward{
+            code
+            name
+          }
+          province{
+            code
+            name
+          }
+          nation{
+            code
+            name
+          }
+          nationality{
+            code
+            name
+          }
+          street
+          district{
+            code
+            name
+          }
+          work{
+            code
+            name
+          }
+        }
+        channel
+        departmentId
+        department{
+          _id
+          code
+          name
+        }
+        note
+        state
+        followByDoctor
+
+      }
+    }
+  }
+`
+//new update: them query lấy danh sách bác sĩ trực để đặt khám
+export const QUERY_SHIFT_DOCTORS = gql`
+query getShiftDoctor($departmentId: String!, $date: DateTime!)
+{
+  response:shiftDoctors(departmentId: $departmentId, date: $date)
+  {
+    code
+    message
+    data
+    {
+      _id
+      base{
+        fullName
+        code
+        departmentName
+      }
+    }
+  }
+}
+`

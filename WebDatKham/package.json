@@ -1,0 +1,65 @@
+{
+  "name": "react-datkham",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/helper-regex": "^7.10.5",
+    "@date-io/date-fns": "^1.3.13",
+    "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "add": "^2.0.6",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-http": "^1.5.16",
+    "apollo-link-ws": "^1.0.19",
+    "apollo-upload-client": "^12.1.0",
+    "bootstrap": "^4.4.1",
+    "date-fns": "^2.0.0-beta.5",
+    "env-cmd": "^10.1.0",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "is-promise": "^4.0.0",
+    "lodash.at": "^4.6.0",
+    "moment": "^2.24.0",
+    "react": "^16.13.1",
+    "react-apollo": "^3.1.3",
+    "react-component-queries": "^2.3.0",
+    "react-day-picker": "^7.4.0",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "react-select": "2.4.4",
+    "react-sizeme": "^2.6.12",
+    "react-toastify": "^5.5.0",
+    "reactstrap": "^8.4.1",
+    "subscriptions-transport-ws": "^0.9.16",
+    "vtbase-react-confirm-alert": "^1.0.8",
+    "yarn": "^1.22.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

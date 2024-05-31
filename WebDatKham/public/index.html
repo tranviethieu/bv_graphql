@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/%REACT_APP_FAVICON%" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script:700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <title>Đặt khám %REACT_APP_HOSPITAL%</title>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  
+  <% if (process.env.REACT_APP_ENABLE_CHAT === 'true') { %>    
+    <div class="zalo-chat-widget" data-oaid="4165609542722971943" data-welcome-message="Xin chào, Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="350" data-height="420"></div>
+    <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+
+    <!-- Messenger Plugin chat Code -->
+    <div id="fb-root"></div>
+  <% } %>
+
+  <!-- Your Plugin chat code -->
+  <div class="more_action_right">
+    <ul>
+      <li><a href="tel:%REACT_APP_HOTLINE_CALL_BUTTON%"><img src="/images/phone-call.png"></a></li>
+    </ul>
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+  </div>
+
+  <% if (process.env.REACT_APP_ENABLE_CHAT === 'true') { %> 
+  <script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "179388622248248");
+    chatbox.setAttribute("attribution", "biz_inbox");
+
+    window.fbAsyncInit = function () {
+      FB.init({
+        xfbml: true,
+        version: 'v11.0'
+      });
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <% } %>
+  <style>
+    .zalo-chat-widget {
+      bottom: 100px !important;
+      right: 20px !important;
+    }
+
+    .more_action_right {
+      position: fixed;
+      bottom: 30px;
+      right: 23px;
+      z-index: 1000;
+    }
+
+    .more_action_right ul {
+      padding: 0px;
+      margin: 0px;
+      display: flex;
+      flex-direction: row-reverse;
+    }
+
+    .more_action_right ul li {
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border-radius: 50px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 16px;
+      margin-right: 8px;
+    }
+
+    .more_action_right ul li img {
+      width: 100%;
+    }
+
+    @-webkit-keyframes pulsate {
+      0% {
+        -webkit-transform: scale(0.1, 0.1);
+        opacity: 0.0;
+        border: 0px solid #3A9819;
+      }
+
+      50% {
+        opacity: 0.5;
+        border: 16px solid #3A9819;
+      }
+
+      100% {
+        -webkit-transform: scale(1.2, 1.2);
+        opacity: 0.0;
+        border: 24px solid #3A9819;
+      }
+    }
+
+    @-webkit-keyframes rotate-in-2-cw {
+      0% {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        opacity: 0
+      }
+
+      100% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+        opacity: 1
+      }
+    }
+
+    @keyframes rotate-in-2-cw {
+      0% {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        opacity: 0
+      }
+
+      100% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+        opacity: 1
+      }
+    }
+
+    .more_action_right ul li {
+      position: relative;
+      z-index: 1000;
+    }
+
+    .more_action_right ul li a {
+      display: flex;
+      width: 48px;
+      height: 48px;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .more_action_right ul li a img {
+      -webkit-animation: rotate-in-2-cw .6s cubic-bezier(.25, .46, .45, .94) infinite alternate both;
+      animation: rotate-in-2-cw .6s cubic-bezier(.25, .46, .45, .94) infinite alternate both;
+    }
+
+    .more_action_right ul li a::before {
+      content: "";
+      animation: pulsate 1s ease-out;
+      animation-iteration-count: infinite;
+      opacity: 0.0;
+
+      border-radius: 50%;
+      position: absolute;
+      text-align: center;
+      margin: auto;
+      z-index: 999;
+    }
+  </style>
+</body>
+
+</html>

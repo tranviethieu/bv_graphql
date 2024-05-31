@@ -1,0 +1,249 @@
+/* Custom cho phần sơ đồ tổ chức */
+.initechNode {
+    border: solid 1px #fff;
+    border-radius: 3px;
+    padding: 2px;
+    width: 150px;
+    height: 35px;
+    white-space: nowrap;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    background-color: #487eb0;
+    color: #fff
+}
+
+#initechOrgChart .orgNodeChildGroup .nodeGroupLineVerticalMiddle {
+    border-right: solid 1px #fff
+}
+
+#initechOrgChart .nodeLineBorderTop {
+    border-top: solid 1px #fff;
+}
+/* Hết phần custom sơ đồ tổ chức */
+.el-orgchart-wrapper{
+  flex:1;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  width: 100%;
+}
+.el-graph-node{
+  min-width: 150px !important;
+}
+.el-orgchart-container{
+  padding-top: 30px;
+}
+.el-TableCell-DateTime-Badge{
+    padding-left: 15px !important;
+}
+.el-ContentHeader-CallCampaigns{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+.el-minWith-Button{
+  min-width: auto;
+  margin-right: 2px
+}
+.el-reOpen{
+  display: flex;
+  align-items: center;
+}
+.el-ContentHeader-CallCampaigns el-ContentHeader-title{
+  display: flex;
+  align-items: center;
+}
+.el-CallCampaigns-FuseChipSelect{
+  min-width: 200px;
+}
+.el-cover-table{
+    display: contents;
+}
+.el-coverUAD-Prescription{
+    width: 700px;
+    position: absolute;
+    right: 200px;
+}
+.el-coverUAD-TestResult{
+    width: 1000px;
+    position: absolute;
+    right: 40px;
+}
+.el-CurrentCallPanel-Item{
+  flex: 1 auto;
+}
+.el-CallPopUp-ExpandContent{
+  overflow: auto;
+  height: 40vh;
+}
+.el-MyActionsPanel-ListItem{
+  display: block;
+}
+.el-CallOutPanel-Header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.el-CallOutPanel-Header h6{
+  margin-bottom: 0;
+  margin-left: 10px;
+}
+.el-CallOutPanel-WhiteColor{
+  color: white;
+}
+.el-CallOutPanel-Button{
+  margin-top: 20px;
+  background-color: rgb(72, 126, 176);
+  color: #ffff;
+  text-transform: none;
+}
+.el-smallText{
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+}
+.el-coverUAD{
+    width: 450px;
+    position: absolute;
+    right: 470px;
+}
+.el-coverFUD{
+    width: 450px;
+}
+.el-GridWordWrap{
+  word-wrap: break-word;
+}
+#el-resetDateFilter{
+  padding-top: 15px;
+  padding-left: 5px;
+}
+.el-filterDateSelect{
+  display: flex;
+}
+#el-infoHistoryDialog .MuiDialog-container .MuiPaper-root{
+  width: 40%;
+}
+#el-infoHistoryDialog{
+  z-index: 10 !important;
+}
+.el-ButtonLowerCase{
+  text-transform: unset !important;
+}
+.el-CardActionHistory{
+  display: unset;
+}
+.el-CardActions-UA{
+  width: 100%;
+  flex-direction: row-reverse;
+}
+.el-CardContent-FU{
+  overflow: auto;
+  max-height: 50vh;
+}
+.el-CardContent-FULL{
+  overflow: auto;
+  max-height: 80vh;
+}
+.el-History{
+  max-height: 50vh;
+  overflow: auto;
+  box-shadow: none!important;
+  border-top: 1px solid #ededed;
+}
+.el-CardActionHistory .MuiMobileStepper-root{
+  background-color: white;
+}
+#el-ButtonGroupFloatUA{
+  display: flex;
+}
+#el-TodoChipDragTittle{
+  color: white;
+}
+.el-TitleName{
+  font-weight: bold;
+  font-size: 15;
+}
+.el-HoverSurvey:hover{
+  background-color: #487eb0 !important;
+  color: white !important;
+}
+.el-MyActionsPanel-Header{
+  background-color: #273c75;
+  color: #fff;
+}
+.el-TableRing .rt-table .rt-tbody .rt-tr-group{
+  flex: initial !important;
+}
+#el-customCardHeader span{
+ font-size: initial;
+}
+.el-Draggable-Dialog{
+  width: min-content;
+}
+.textWhiteBold{color: #fff !important; font-weight: bold !important; margin-left: 5px;}
+.chat_tab_select{ width: 100%; height: 100%; z-index: 1000;}
+.el-LoginForm{ margin: 50px 16px 0px 50px !important; height: calc(100% - 100px) !important; border-radius:6px; display: flex; align-items: center;}
+#el-ChatChanelSidebar{ display: flex; color: #595959; cursor: pointer ;
+}
+#el-ChatApp{background: #353b48;}
+.select_chat{position: relative; }
+.flex-row{display: flex; flex-direction: row; justify-content: space-between; align-items: center;}
+.chat-box-content{box-shadow: 9px 9px 12px rgba(0, 0, 0, 0.2); margin-bottom: 10px;}
+.navigation .active{border-radius: 0px !important; width: 100%!important;}
+.el-Toolbar-Menu{background: #fff!important;}
+.el-Toolbar-Menu .material-icons, .el-Toolbar-Menu span {color: #636e72!important;}
+.el-Draggable-Dialog .MuiCard-root{box-shadow: 6px 6px 19px rgba(0, 0, 0, 0.2) !important;}
+.MuiPaper-elevation1{box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);}
+#el-SurveyEdit-Content div .mt-10{box-sizing: border-box; padding: 16px; border:1px solid #ededed}
+#el-SurveyEdit-Content div .mt-10:nth-child(odd) { background: #ededed;}
+.full-width{width: 100%;}
+.el-Realtime{background: #fff; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2); margin-bottom: 16px; border-radius: 4px;}
+.el-cover-table1{background: #fff; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2); margin-bottom: 16px; height: 100%; border-radius: 4px;}
+.el-TitleHeader-Table{margin-bottom: 16px; border-radius:4px; display: flex; background: #487eb0;}
+.el-ButtonHeader{background: #0097e6; color: #fff;}
+.el-ButtonHeader:hover{background: #40739e;}
+.MuiCardHeader-root{background: #487eb0; color: #fff;}
+.MuiCardHeader-root .material-icons{color: #fff;}
+#el-RealtimeDashboardApp-Cover{padding: 30px;}
+.btn-blue{background: #0097e6 !important; color: #fff;}
+.btn-blue:hover{background: #40739e !important;}
+.btn-red{background: #e74c3c !important; color: #fff;},
+.btn-red:hover{background: #c0392b!important;}
+.el-CardHeader-FU .MuiCardHeader-content span{color: #fff!important;}
+.rt-table .rt-tbody .rt-td{text-align: left!important; justify-content: left!important; box-sizing: border-box; padding: 0px 16px 0px 16px !important;}
+.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{ box-sizing: border-box; font-size: 12px; font-weight: bold;}
+.report-action-header{justify-content: space-between! important; width: 100%;}
+.el-fillter-report-action{display: flex; flex-wrap: wrap; width: 100%; box-sizing: border-box; padding: 8px; align-content: stretch;}
+.el-fillter-report-action .el-flex-item{min-width: 25%; box-sizing: border-box; padding-left: 8px; padding-right: 8px;}
+.el-coverContent{margin-top: -24px !important; box-sizing: border-box;}
+.el-block-report{background: #fff; box-sizing: border-box; padding: 16px; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); border-radius: 4px;
+margin-bottom: 16px;}
+.el-card-white{ min-width: 20%; background: #fff; box-sizing: border-box; padding: 8px; margin: 8px; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); flex: 1; border-radius: 4px;}
+.el-coverContent .MuiPaper-root{border: none; box-shadow: none;}
+.el-flex-row{display: flex; flex-direction: row; flex-wrap: wrap; align-items: stretch; align-content: stretch; align-self: stretch; align-items: stretch;}
+.flex-item-flex1{flex: 1; min-width: 200px;}
+.rt-td{text-overflow: ellipsis;}
+.block-tittle{border-bottom: 1px solid #ededed; padding-bottom: 10px; text-transform: uppercase; color: #333;}
+.el-flex-col{display: flex; flex-direction: column; align-items: center; justify-content: center;}
+.MuiDialogTitle-root{background: #487eb0; color: #fff;}
+.el-TableCall{}
+.ReactTable .rt-tbody{width: auto!important; max-width: 100% !important;font-size: 12px;}
+.ReactTable .rt-tbody .rt-tr-group{ max-width: 100% !important;}
+.box-table-scroll{position: relative; width: 100%; overflow-x: scroll;display: inline-block;}
+.el-ButtonLowerCase-ShowDialog{
+  text-transform: unset !important;
+  color: #039be5;
+  font-weight: unset;
+}
+.ReactTable .rt-thead .rt-th{
+  border-right: none !important;
+}
+.ReactTable .rt-thead .rt-resizable-header-content{
+  justify-content: left !important;
+  padding-left: 12px;
+}
